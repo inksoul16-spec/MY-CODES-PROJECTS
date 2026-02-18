@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Admin Upload - BJC MEDIA STUDIO</title><link rel="stylesheet" href="/public/styles.css" /></head>
+<body>
+<main>
+  <h1>Upload new media</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% if (success) { %><p class="success"><%= success %></p><% } %>
+
+  <form method="post" action="/admin/upload" enctype="multipart/form-data">
+    <label>Title<input name="title" required /></label>
+    <label>Description<textarea name="description"></textarea></label>
+    <label>Price in USD<input name="price" type="number" step="0.01" min="0.01" required /></label>
+    <label>Image or video<input type="file" name="mediaFile" accept="image/*,video/*" required /></label>
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>Uploaded assets</h2>
+  <ul>
+    <% assets.forEach(asset => { %>
+      <li><strong><%= asset.title %></strong> - <%= asset.type %> - <%= formatMoney(asset.price_cents) %> - <a href="/assets/<%= asset.id %>">view</a></li>
+    <% }) %>
+  </ul>
+
+  <p><a href="/">Go to marketplace</a></p>
+</main>
+</body>
+</html>
