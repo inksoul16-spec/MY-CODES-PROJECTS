@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Dashboard - BJC MEDIA STUDIO</title><link rel="stylesheet" href="/public/styles.css" /></head>
+<body>
+<main>
+  <h1>Welcome, <%= user.full_name %></h1>
+  <p>Trial expires: <strong><%= new Date(user.trial_expires_at).toDateString() %></strong> (<%= trialDaysLeft %> day(s) left)</p>
+  <% if (premiumDaysLeft > 0) { %>
+    <p>Premium active for <strong><%= premiumDaysLeft %> day(s)</strong>.</p>
+  <% } else { %>
+    <p>Premium inactive. Subscribe for unlimited downloads after trial.</p>
+    <form method="post" action="/premium/subscribe">
+      <button type="submit">Pay $19.99 for 30-day premium (demo checkout)</button>
+    </form>
+  <% } %>
+
+  <h2>Purchase history</h2>
+  <% if (!purchases.length) { %>
+    <p>No purchases yet.</p>
+  <% } %>
+  <ul>
+    <% purchases.forEach(purchase => { %>
+      <li>
+        <%= new Date(purchase.created_at).toLocaleString() %> -
+        <% if (purchase.purchase_type === 'premium') { %>
+          Premium subscription
+        <% } else { %>
+          Asset purchase: <%= purchase.asset_title %>
+        <% } %>
+        (<%= formatMoney(purchase.amount_cents) %>)
+      </li>
+    <% }) %>
+  </ul>
+
+  <p><a href="/">Go to marketplace</a></p>
+</main>
+</body>
+</html>

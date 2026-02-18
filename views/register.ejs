@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Register - BJC MEDIA STUDIO</title><link rel="stylesheet" href="/public/styles.css" /></head>
+<body>
+<main class="auth">
+  <h1>Create buyer account</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="post" action="/register">
+    <label>Full name<input name="fullName" required /></label>
+    <label>Email<input type="email" name="email" required /></label>
+    <label>Password<input type="password" name="password" required minlength="6" /></label>
+    <button type="submit">Start 30-day trial</button>
+  </form>
+  <p><a href="/">Back to home</a></p>
+</main>
+</body>
+</html>

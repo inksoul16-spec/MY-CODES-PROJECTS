@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BJC MEDIA STUDIO</title>
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>BJC MEDIA STUDIO</h1>
+    <nav>
+      <a href="/">Home</a>
+      <% if (currentUser) { %><a href="/dashboard">Dashboard</a><% } %>
+      <% if (!currentUser) { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } else { %>
+        <form method="post" action="/logout" class="inline"><button type="submit">Logout</button></form>
+      <% } %>
+      <a href="/admin/login">Cameraman Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Professional Photos & Videos</h2>
+      <p>Every new buyer gets a <strong>30-day free trial</strong> with unrestricted downloads. After trial, continue by buying individual assets or premium plan.</p>
+    </section>
+
+    <section>
+      <h3>Media Marketplace</h3>
+      <% if (!assets.length) { %>
+        <p>No media uploaded yet. Cameraman can upload from admin panel.</p>
+      <% } %>
+      <div class="grid">
+        <% assets.forEach(asset => { %>
+          <article class="card">
+            <% if (asset.type === 'image') { %>
+              <img src="/uploads/<%= asset.filename %>" alt="<%= asset.title %>" />
+            <% } else { %>
+              <video controls>
+                <source src="/uploads/<%= asset.filename %>" type="<%= asset.mime_type %>" />
+              </video>
+            <% } %>
+            <h4><%= asset.title %></h4>
+            <p><%= asset.description %></p>
+            <p class="price"><%= formatMoney(asset.price_cents) %></p>
+            <a class="btn" href="/assets/<%= asset.id %>">Open asset</a>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

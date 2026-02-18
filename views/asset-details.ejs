@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title><%= asset.title %> - BJC MEDIA STUDIO</title><link rel="stylesheet" href="/public/styles.css" /></head>
+<body>
+<main>
+  <h1><%= asset.title %></h1>
+  <p><%= asset.description %></p>
+  <p>Price: <strong><%= formatMoney(asset.price_cents) %></strong></p>
+
+  <% if (asset.type === 'image') { %>
+    <img class="preview" src="/uploads/<%= asset.filename %>" alt="<%= asset.title %>" />
+  <% } else { %>
+    <video class="preview" controls>
+      <source src="/uploads/<%= asset.filename %>" type="<%= asset.mime_type %>" />
+    </video>
+  <% } %>
+
+  <% if (!currentUser) { %>
+    <p><a href="/login">Login</a> to download or buy this asset.</p>
+  <% } else { %>
+    <p>
+      Trial active: <strong><%= access.trialActive ? 'Yes' : 'No' %></strong> |
+      Premium active: <strong><%= access.premiumActive ? 'Yes' : 'No' %></strong> |
+      Purchased: <strong><%= access.hasPurchased ? 'Yes' : 'No' %></strong>
+    </p>
+
+    <% if (!access.canDownload) { %>
+      <form method="post" action="/assets/<%= asset.id %>/buy" class="inline">
+        <button type="submit">Buy this asset</button>
+      </form>
+      <p>Or subscribe to premium from your dashboard.</p>
+    <% } %>
+
+    <% if (access.canDownload) { %>
+      <a class="btn" href="/download/<%= asset.id %>">Download now</a>
+    <% } %>
+  <% } %>
+
+  <p><a href="/">Back to marketplace</a></p>
+</main>
+</body>
+</html>
